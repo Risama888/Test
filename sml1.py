@@ -9,10 +9,8 @@ import ta
 import os
 
 # Konfigurasi Telegram
-TELEGRAM_BOT_TOKEN = '7795073622:AAFEHjnKKNAUv2SEwkhLpvblMqolLNjSP48'  # Ganti dengan token bot Telegram Anda
-TELEGRAM_CHAT_ID = '6157064978'      # Ganti dengan chat ID Anda
-
-LOG_FILE = 'trade_log.csv'
+TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'  # Ganti dengan token bot Telegram Anda
+TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE'      # Ganti dengan chat ID Anda
 
 def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
@@ -116,30 +114,6 @@ def detect_active_signals(df):
         'active_training_stop_index': last_training_stop_idx
     }
 
-def load_trade_log():
-    if os.path.exists(LOG_FILE):
-        return pd.read_csv(LOG_FILE)
-    else:
-        # Jika file tidak ada, buat DataFrame baru
-        return pd.DataFrame(columns=['timestamp', 'supertrend_signal', 'training_stop_signal', 'trade_type'])
-
-def save_trade_log(df_log):
-    df_log.to_csv(LOG_FILE, index=False)
-
-def add_trade_log(entry):
-    df_log = load_trade_log()
-    # Cek entri terakhir untuk menghindari duplikasi
-    if not df_log.empty:
-        last_entry = df_log.iloc[-1]
-        if (last_entry['supertrend_signal'] == entry['supertrend_signal'] and
-            last_entry['training_stop_signal'] == entry['training_stop_signal']):
-            # Entri sama, tidak perlu menambah
-            return
-    # Tambahkan entri baru
-    df_new = pd.DataFrame([entry])
-    df_log = pd.concat([df_log, df_new], ignore_index=True)
-    save_trade_log(df_log)
-
 def main():
     # Ambil data
     df = fetch_binance_klines()
@@ -150,23 +124,13 @@ def main():
     # Tentukan tipe trade berdasarkan sinyal terbaru
     trade_type = 'Beli' if signals['latest_supertrend_signal'] == 1 else 'Jual'
 
-    # Tambahkan entri ke trade log jika berbeda dengan terakhir
-    log_entry = {
-        'timestamp': pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'supertrend_signal': signals['latest_supertrend_signal'],
-        'training_stop_signal': signals['latest_training_stop_signal'],
-        'trade_type': trade_type
-    }
-    add_trade_log(log_entry)
-
-    # Kirim pesan ke Telegram
+    # Kirim pesan ke Telegram tentang sinyal terbaru
     message = f"🟢 *Sinyal Terbaru:*\n"
     message += f"SuperTrend: {'Beli' if signals['latest_supertrend_signal'] == 1 else 'Jual'}\n"
     message += f"Training Stop: {'Beli' if signals['latest_training_stop_signal'] == 1 else 'Jual'}\n"
-    message += f"Log Entry Time: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}"
     send_telegram_message(message)
 
-    print("Pesan dan trade log telah diperbarui dan dikirim.")
+    print("Pesan tentang sinyal terbaru telah dikirim.")
 
 if __name__ == "__main__":
     main()
