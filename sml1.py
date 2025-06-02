@@ -9,8 +9,8 @@ import ta
 import os
 
 # Konfigurasi Telegram
-TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'  # Ganti dengan token bot Telegram Anda
-TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE'      # Ganti dengan chat ID Anda
+TELEGRAM_BOT_TOKEN = '7795073622:AAFEHjnKKNAUv2SEwkhLpvblMqolLNjSP48'  # Ganti dengan token bot Telegram Anda
+TELEGRAM_CHAT_ID = '6157064978'      # Ganti dengan chat ID Anda
 
 def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
