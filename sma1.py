@@ -168,8 +168,8 @@ while True:
             check_tp_sl(symbol, current_price)
 
         # Delay 5 menit
-        time.sleep(300)
+        time.sleep(30)
 
     except Exception as e:
         print(f"Error: {e}")
-        time.sleep(300)
+        time.sleep(30)
