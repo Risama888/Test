@@ -57,7 +57,7 @@ def send_telegram_message(message):
     except Exception as e:
         print(f"Gagal mengirim pesan: {e}")
 
-def fetch_binance_klines(symbol='BTCUSDT', interval='30m', limit=500):
+def fetch_binance_klines(symbol='BTCUSDT', interval='1m', limit=500):
     url = 'https://api.binance.com/api/v3/klines'
     params = {'symbol': symbol, 'interval': interval, 'limit': limit}
     try:
