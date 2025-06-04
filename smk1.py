@@ -14,8 +14,8 @@ TELEGRAM_CHAT_ID = '6157064978'      # Ganti dengan chat ID Anda
 symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
 
 # Parameter indikator
-supertrend_period = 10
-supertrend_multiplier = 3
+supertrend_period = 20
+supertrend_multiplier = 6
 ema_period = 200
 tp_percentage = 0.02  # 2%
 sl_percentage = 0.01  # 1%
@@ -57,7 +57,7 @@ def send_telegram_message(message):
     except Exception as e:
         print(f"Gagal mengirim pesan: {e}")
 
-def fetch_binance_klines(symbol='BTCUSDT', interval='1m', limit=500):
+def fetch_binance_klines(symbol='BTCUSDT', interval='5m', limit=500):
     url = 'https://api.binance.com/api/v3/klines'
     params = {'symbol': symbol, 'interval': interval, 'limit': limit}
     try:
